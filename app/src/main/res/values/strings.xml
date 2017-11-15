@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Super</string>
     <string name="title_activity_camera">CameraActivity</string>
+    <string name="title_activity_my_tracker">MyTrackerActivity</string>
 </resources>

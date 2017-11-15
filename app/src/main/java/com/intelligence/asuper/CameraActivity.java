@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -28,6 +29,7 @@ public class CameraActivity extends Activity implements CameraBridgeViewBase.CvC
     private CameraBridgeViewBase mCVCamera;
     //缓存相机每帧输入的数据
     private Mat mRgba, mTmp;
+    private Mat mFlipRgba;
     //按钮组件
     private Button mButton;
     //当前处理状态
@@ -73,6 +75,13 @@ public class CameraActivity extends Activity implements CameraBridgeViewBase.CvC
         mCVCamera = (CameraBridgeViewBase) findViewById(R.id.camera_view);
         mCVCamera.setCvCameraViewListener(this);
 
+
+        WindowManager wm = this.getWindowManager();
+        int width = wm.getDefaultDisplay().getWidth();
+        int height = wm.getDefaultDisplay().getHeight();
+        mCVCamera.setMaxFrameSize(width,height);
+
+
         mButton = (Button) findViewById(R.id.deal_btn);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,8 +121,8 @@ public class CameraActivity extends Activity implements CameraBridgeViewBase.CvC
         // TODO Auto-generated method stub
         mRgba = new Mat(height, width, CvType.CV_8UC4);
         mTmp = new Mat(height, width, CvType.CV_8UC4);
-
         mIntermediateMat = new Mat();
+        mFlipRgba = new Mat();
         mSize0 = new Size();
         mChannels = new MatOfInt[]{new MatOfInt(0), new MatOfInt(1), new MatOfInt(2)};
         mBuff = new float[mHistSizeNum];
@@ -131,13 +140,16 @@ public class CameraActivity extends Activity implements CameraBridgeViewBase.CvC
         mWhilte = Scalar.all(255);
         mP1 = new Point();
         mP2 = new Point();
-
         // Fill sepia kernel
         mSepiaKernel = new Mat(4, 4, CvType.CV_32F);
         mSepiaKernel.put(0, 0, /* R */0.189f, 0.769f, 0.393f, 0f);
         mSepiaKernel.put(1, 0, /* G */0.168f, 0.686f, 0.349f, 0f);
         mSepiaKernel.put(2, 0, /* B */0.131f, 0.534f, 0.272f, 0f);
         mSepiaKernel.put(3, 0, /* A */0.000f, 0.000f, 0.000f, 1f);
+
+
+
+
     }
 
     @Override
@@ -163,7 +175,6 @@ public class CameraActivity extends Activity implements CameraBridgeViewBase.CvC
 
         int width = cols * 3 / 4;
         int height = rows * 3 / 4;
-
         switch (Cur_State) {
             case 1:
                 //灰化处理
