@@ -79,7 +79,7 @@ public class CameraActivity extends Activity implements CameraBridgeViewBase.CvC
         WindowManager wm = this.getWindowManager();
         int width = wm.getDefaultDisplay().getWidth();
         int height = wm.getDefaultDisplay().getHeight();
-        mCVCamera.setMaxFrameSize(width,height);
+        mCVCamera.setMaxFrameSize(width, height);
 
 
         mButton = (Button) findViewById(R.id.deal_btn);
@@ -146,9 +146,6 @@ public class CameraActivity extends Activity implements CameraBridgeViewBase.CvC
         mSepiaKernel.put(1, 0, /* G */0.168f, 0.686f, 0.349f, 0f);
         mSepiaKernel.put(2, 0, /* B */0.131f, 0.534f, 0.272f, 0f);
         mSepiaKernel.put(3, 0, /* A */0.000f, 0.000f, 0.000f, 1f);
-
-
-
 
     }
 
